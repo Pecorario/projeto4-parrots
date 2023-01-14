@@ -7,6 +7,9 @@ let turnedCards = [];
 let listOfRightCards = [];
 
 let cardSelected;
+let response = '';
+
+let id;
 
 const data = [
   'bobrossparrot.gif',
@@ -22,21 +25,37 @@ function comparator() {
   return Math.random() - 0.5;
 }
 
-// function addTime() {
-//   time++;
-// }
+function timer() {
+  id = setInterval(() => {
+    addTime();
+  }, 1000);
+}
+
+function addTime() {
+  const h2 = document.querySelector('h2');
+  time++;
+
+  h2.innerHTML = time;
+}
 
 function clearGame() {
   quantityCards = 0;
-  turnedCards = [];
-  listOfGifs = [];
   quantityOfClicks = 0;
-  cardSelected = '';
+  time = 0;
+
+  listOfGifs = [];
+  turnedCards = [];
   listOfRightCards = [];
+
+  cardSelected = '';
 
   const list = document.querySelector('ul');
 
   list.innerHTML = '';
+}
+
+function endGame() {
+  clearInterval(id);
 }
 
 function getQuantityOfCards() {
@@ -64,6 +83,7 @@ function getGifs() {
 function createGame() {
   const list = document.querySelector('ul');
 
+  timer();
   getGifs();
 
   for (let i = 0; i < quantityCards; i++) {
@@ -84,14 +104,27 @@ function handleTurnAllCardsBack() {
   const cardTwo = list.children[turnedCards[1]];
 
   setTimeout(() => {
-    cardOne.querySelector('.closed img').style.transform = 'rotateY(0deg)';
-    cardOne.querySelector('.opened img').style.transform = 'rotateY(-180deg)';
+    cardOne.children[0].style.transform = 'rotateY(0deg)';
+    cardOne.children[1].style.transform = 'rotateY(-180deg)';
 
-    cardTwo.querySelector('.closed img').style.transform = 'rotateY(0deg)';
-    cardTwo.querySelector('.opened img').style.transform = 'rotateY(-180deg)';
+    cardTwo.children[0].style.transform = 'rotateY(0deg)';
+    cardTwo.children[1].style.transform = 'rotateY(-180deg)';
   }, '1000');
 
   turnedCards = [];
+}
+
+function willPlayAgain() {
+  response = prompt('Gostaria de reiniciar a partida? (digite sim ou não)');
+
+  if (response === 'sim') {
+    clearGame();
+    getQuantityOfCards();
+  } else if (response === 'não') {
+    endGame();
+  } else {
+    willPlayAgain();
+  }
 }
 
 function handleAddRightCards() {
@@ -101,9 +134,12 @@ function handleAddRightCards() {
 
   if (listOfRightCards.length === Number(quantityCards)) {
     setTimeout(() => {
-      alert(`Você ganhou em ${quantityOfClicks} jogadas!`);
-      clearGame();
-    }, 500);
+      alert(
+        `Você ganhou em ${quantityOfClicks} jogadas! A duração do jogo foi de ${time} segundos!`
+      );
+
+      willPlayAgain();
+    }, 200);
   }
 }
 

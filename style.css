@@ -4,6 +4,7 @@
 
 body {
   background: #EEF9BF;
+  position: relative;
 }
 
 h1 {
@@ -22,6 +23,18 @@ ul {
   flex-wrap: wrap;
   gap: 34px;
   padding: 0 10%;
+}
+
+h2 {
+  position: absolute;
+  top: -24px;
+  right: 18px;
+
+  font-size: 36px;
+  line-height: 42px;
+  font-weight: 700;
+
+  color: #86BD8D;
 }
 
 .card {
