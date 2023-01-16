@@ -87,12 +87,12 @@ function createGame() {
   getGifs();
 
   for (let i = 0; i < quantityCards; i++) {
-    list.innerHTML += `<li class="card" onclick="handleTurnCard(this, ${i})">
+    list.innerHTML += `<li class="card" data-test="card" onclick="handleTurnCard(this, ${i})">
     <div class="face closed">
-      <img src="assets/back.png" alt="" />
+      <img src="assets/back.png" alt="" data-test="face-down-image" />
     </div>
     <div class="face opened">
-      <img src="assets/${listOfGifs[i]}" alt="" />
+      <img src="assets/${listOfGifs[i]}" alt="" data-test="face-up-image" />
     </div>
   </li>`;
   }
@@ -115,7 +115,9 @@ function handleTurnAllCardsBack() {
 }
 
 function willPlayAgain() {
-  response = prompt('Gostaria de reiniciar a partida? (digite sim ou não)');
+  while (response !== 'sim' && response !== 'não') {
+    response = prompt('Gostaria de reiniciar a partida? (digite sim ou não)');
+  }
 
   if (response === 'sim') {
     clearGame();
