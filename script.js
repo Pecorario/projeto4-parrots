@@ -26,12 +26,15 @@ function comparator() {
 }
 
 function timer() {
+  console.log('Entrou no timer', time);
   id = setInterval(() => {
     addTime();
   }, 1000);
 }
 
 function addTime() {
+  console.log('Entrou no add time', time);
+
   const h2 = document.querySelector('h2');
   time++;
 
@@ -39,6 +42,8 @@ function addTime() {
 }
 
 function clearGame() {
+  clearInterval(id);
+
   quantityCards = 0;
   quantityOfClicks = 0;
   time = 0;
