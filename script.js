@@ -6,10 +6,12 @@ let listOfGifs = [];
 let turnedCards = [];
 let listOfRightCards = [];
 
-let cardSelected;
-let response = '';
-
+let cardOneSelected;
+let cardTwoSelected;
 let id;
+
+let response = '';
+let clickable = true;
 
 const data = [
   'bobrossparrot.gif',
@@ -26,15 +28,12 @@ function comparator() {
 }
 
 function timer() {
-  console.log('Entrou no timer', time);
   id = setInterval(() => {
     addTime();
   }, 1000);
 }
 
 function addTime() {
-  console.log('Entrou no add time', time);
-
   const h2 = document.querySelector('h2');
   time++;
 
@@ -52,7 +51,8 @@ function clearGame() {
   turnedCards = [];
   listOfRightCards = [];
 
-  cardSelected = '';
+  cardOneSelected = null;
+  cardTwoSelected = null;
 
   const list = document.querySelector('ul');
 
@@ -104,16 +104,16 @@ function createGame() {
 }
 
 function handleTurnAllCardsBack() {
-  const list = document.querySelector('ul');
-  const cardOne = list.children[turnedCards[0]];
-  const cardTwo = list.children[turnedCards[1]];
+  clickable = false;
 
   setTimeout(() => {
-    cardOne.children[0].style.transform = 'rotateY(0deg)';
-    cardOne.children[1].style.transform = 'rotateY(-180deg)';
+    cardOneSelected.children[0].style.transform = 'rotateY(0deg)';
+    cardOneSelected.children[1].style.transform = 'rotateY(-180deg)';
 
-    cardTwo.children[0].style.transform = 'rotateY(0deg)';
-    cardTwo.children[1].style.transform = 'rotateY(-180deg)';
+    cardTwoSelected.children[0].style.transform = 'rotateY(0deg)';
+    cardTwoSelected.children[1].style.transform = 'rotateY(-180deg)';
+
+    clickable = true;
   }, '1000');
 
   turnedCards = [];
@@ -154,7 +154,7 @@ function handleTurnCard(card, index) {
   const back = card.querySelector('.closed');
   const opened = card.querySelector('.opened');
 
-  if (!listOfRightCards.includes(index)) {
+  if (!listOfRightCards.includes(index) && clickable) {
     quantityOfClicks++;
     opened.style.transform = 'rotateY(0deg)';
     back.style.transform = 'rotateY(-180deg)';
@@ -162,10 +162,12 @@ function handleTurnCard(card, index) {
     turnedCards.push(index);
 
     if (turnedCards.length === 1) {
-      cardSelected = card;
+      cardOneSelected = card;
     } else if (turnedCards.length === 2) {
+      cardTwoSelected = card;
+
       const currentCard = card.querySelector('.opened img').getAttribute('src');
-      const selectedCard = cardSelected
+      const selectedCard = cardOneSelected
         .querySelector('.opened img')
         .getAttribute('src');
 
